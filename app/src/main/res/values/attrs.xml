@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- NavigationBar -->
+    <declare-styleable name="HUJGFD">
+        <attr name="mapbackground" format="reference"></attr>
+        <attr name="maptitle" format="reference|string"></attr>
+        <attr name="mapleftBackground" format="reference"></attr>
+        <attr name="maptextSize" format="dimension"></attr>
+        <attr name="maptextColor" format="reference|color"></attr>
+    </declare-styleable>
+
+
+</resources>
