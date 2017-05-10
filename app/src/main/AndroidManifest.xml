@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <meta-data android:name="com.fengmap.mapapi.appkey" android:value="6d8898c6765b5e4d169d2c45fa84275f" />
+        <meta-data android:name="com.fengmap.mapapi.appkey" android:value="60152de5615e689bdd59c8a1192fc943" />
         <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -71,10 +71,7 @@ public class MainActivity extends AppCompatActivity implements OnFMMapInitListen
         FMMapInfo mapInfo = mFMMap.getFMMapInfo();
         ArrayList<FMGroupInfo> groups = mapInfo.getGroups();
         displayGroupView(groups);
-        int groupId = mFMMap.getFocusGroupId();
-        //获取图片图层
-        mImageLayer = mFMMap.getFMLayerProxy().createFMImageLayer(groupId);
-        mFMMap.addLayer(mImageLayer);
+
         addImageMarker();
 
     }
@@ -83,21 +80,24 @@ public class MainActivity extends AppCompatActivity implements OnFMMapInitListen
      * 添加图片标注
      */
     private void addImageMarker() {
-        if (mImageMarker != null) {
-            return;
-        }
+//        if (mImageMarker != null) {
+//            return;
+//        }
+        int groupId = mFMMap.getFocusGroupId();
+        //获取图片图层
+        mImageLayer = mFMMap.getFMLayerProxy().createFMImageLayer(groupId);
+        mFMMap.addLayer(mImageLayer);
+        FMMapCoord centerCoord = new FMMapCoord(1.2946768E7, 4863037.0);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_marker_blue);
+        mImageMarker = new FMImageMarker(centerCoord, bitmap);
+//设置图片宽高
+        mImageMarker.setMarkerWidth(30);
+        mImageMarker.setMarkerHeight(30);
+//设置图片垂直偏离距离
+        mImageMarker.setFMImageMarkerOffsetMode(FMImageMarker.FMImageMarkerOffsetMode.FMNODE_CUSTOM_HEIGHT);
+        mImageMarker.setCustomOffsetHeight(5);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        mImageMarker = new FMImageMarker(CENTER_COORD, bitmap);
-        //设置图片宽高
-        mImageMarker.setMarkerWidth(90);
-        mImageMarker.setMarkerHeight(90);
-        //设置图片在模型之上
-        mImageMarker.setFMImageMarkerOffsetMode(FMImageMarker.FMImageMarkerOffsetMode.FMNODE_MODEL_ABOVE);
-
-        mImageLayer.addMarker(mImageMarker);
-
-//        ViewHelper.setViewEnable(FMOverlayImageMarker.this, R.id.btn_image_add, false);
+        mImageLayer.addMarker(mImageMarker);            //添加图片标志物
     }
 
     @Override
@@ -263,6 +263,8 @@ public class MainActivity extends AppCompatActivity implements OnFMMapInitListen
         FMPickMapCoordResult mapCoordResult = mFMMap.pickMapCoord(v,v1 );
         if (mapCoordResult != null) {
             FMMapCoord mapCoord = mapCoordResult.getMapCoord();
+            Log.e("TAG", "onMapClick: "+mapCoord.x+"    " +mapCoord.y);
+
             FMImageMarker imageMarker = ViewHelper.buildImageMarker(getResources(), mapCoord);
             mImageLayer.addMarker(imageMarker);
         }
@@ -270,10 +272,10 @@ public class MainActivity extends AppCompatActivity implements OnFMMapInitListen
         int groupId = mFMMap.getFocusGroupId();
         //屏幕坐标转换为地图坐标
         FMScreenCoord screenCoord = new FMScreenCoord(x, y);
+        Log.e("TAG", "onMapClick: "+x+"   "+y );
         FMMapCoord convertMapCoord = mFMMap.toFMMapCoord(groupId, screenCoord);
 
         //地图坐标转换为屏幕坐标
-        FMScreenCoord convertScreenCoord = mFMMap.toFMScreenCoord(groupId,
-                FMMapCoordZType.MAPCOORDZ_MODEL, convertMapCoord);
+        FMScreenCoord convertScreenCoord = mFMMap.toFMScreenCoord(groupId,FMMapCoordZType.MAPCOORDZ_MODEL, convertMapCoord);
     }
 }
